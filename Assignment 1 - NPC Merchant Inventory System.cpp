@@ -4,17 +4,16 @@
 #include <algorithm>
 
 struct Item {
-    std::string name;   
-    float price;        
-    int quantity;       
+    std::string name;
+    float price;
+    int quantity;
 
-    
     Item(std::string n, float p, int q) : name(n), price(p), quantity(q) {}
 };
 
 class Merchant {
 private:
-    std::vector<Item> inventory; 
+    std::vector<Item> inventory;
 
 public:
     Merchant() {
@@ -33,7 +32,7 @@ public:
             std::cout << item.name << " - Price: $" << item.price
                 << ", Quantity: " << (item.quantity > 0 ? std::to_string(item.quantity) : "SOLD OUT") << "\n";
         }
-        std::cout << "\n"; 
+        std::cout << "\n";
     }
 
     bool sellItem(const std::string& itemName, int quantity, float& playerMoney) {
@@ -52,8 +51,8 @@ public:
                     std::cout << "Not enough money to buy " << quantity << " of " << item.name << ".\n\n";
                     return false;
                 }
-                item.quantity -= quantity; 
-                playerMoney -= totalCost; 
+                item.quantity -= quantity;
+                playerMoney -= totalCost;
                 std::cout << "Sold " << quantity << " of " << item.name << ".\n\n";
                 return true;
             }
@@ -65,10 +64,10 @@ public:
     float getItemPrice(const std::string& itemName) const {
         for (const auto& item : inventory) {
             if (item.name == itemName) {
-                return item.price; 
+                return item.price;
             }
         }
-        return 0.0f; 
+        return 0.0f;
     }
 
     void buyItem(const std::string& itemName, int quantity, float& playerMoney, std::vector<Item>& playerInventory) {
@@ -78,9 +77,9 @@ public:
                     std::cout << "Not enough " << item.name << " in your inventory.\n\n";
                     return;
                 }
-                float sellPrice = item.price * 0.5f; 
-                playerMoney += sellPrice * quantity; 
-                item.quantity -= quantity; 
+                float sellPrice = item.price * 0.5f;
+                playerMoney += sellPrice * quantity;
+                item.quantity -= quantity;
 
                 if (item.quantity == 0) {
                     playerInventory.erase(std::remove_if(playerInventory.begin(), playerInventory.end(),
@@ -106,78 +105,102 @@ public:
 
 class Player {
 public:
-    float money; 
-    std::vector<Item> inventory;  
+    float money;
+    std::vector<Item> inventory;
 
-    Player() : money(100.0f) {} 
+    Player() : money(100.0f) {}
 
     void addItem(const std::string& name, float price, int quantity) {
         for (auto& item : inventory) {
             if (item.name == name) {
-                item.quantity += quantity; 
+                item.quantity += quantity;
                 return;
             }
         }
-        inventory.push_back(Item(name, price, quantity)); 
+        inventory.push_back(Item(name, price, quantity));
     }
 
     void displayInventory() const {
         std::cout << "Player Inventory:\n";
+        std::cout << "Money: $" << money << "\n";
         for (const auto& item : inventory) {
             std::cout << item.name << " - Quantity: " << item.quantity << "\n";
         }
-        std::cout << "\n"; 
+        std::cout << "\n";
     }
 };
 
 int main() {
     std::string playerName;
-    Player player; 
-    Merchant merchant; 
+    Player player;
+    Merchant merchant;
 
     std::cout << "Enter your name: ";
-    std::getline(std::cin, playerName); 
+    std::getline(std::cin, playerName);
 
-    std::cout << "\nWelcome " << playerName <<  " , The Hero of Gravestone! " << "You currently have $" << player.money << " in your account.\n\n";
+    std::cout << "\nWelcome " << playerName << ", Hero of Gravestone! You currently have $" << player.money << " in your account.\n\n";
     merchant.displayInventory();
 
-    std::string itemName;
-    int quantity;
+    char choice;
 
     while (true) {
-        std::cout << "Enter the name of the item you want to buy (or 'exit' to quit): ";
-        std::getline(std::cin, itemName);
-        if (itemName == "exit") {
-            break; 
+        std::cout << "Press 'B' to buy, 'S' to sell, or 'I' to check your inventory (or 'exit' to quit): ";
+        std::cin >> choice;
+        std::cin.ignore();  // Ignore the newline character
+
+        if (choice == 'e' || choice == 'E') {
+            break;
         }
 
-        std::cout << "Enter quantity: ";
-        std::cin >> quantity;
-        std::cin.ignore(); 
+        switch (choice) {
+        case 'B':
+        case 'b': {
+            std::string itemName;
+            int quantity;
 
-        if (merchant.sellItem(itemName, quantity, player.money)) {
-            player.addItem(itemName, merchant.getItemPrice(itemName), quantity);
-            std::cout << "Updated Merchant Inventory:\n";
-            merchant.displayInventory();
+            std::cout << "Enter the name of the item you want to buy: ";
+            std::getline(std::cin, itemName);
+
+            std::cout << "Enter quantity: ";
+            std::cin >> quantity;
+            std::cin.ignore();
+
+            if (merchant.sellItem(itemName, quantity, player.money)) {
+                player.addItem(itemName, merchant.getItemPrice(itemName), quantity);
+                std::cout << "Updated Merchant Inventory:\n";
+                merchant.displayInventory();
+            }
+
+            std::cout << "Player Money: $" << player.money << "\n\n";
+            break;
         }
 
-        std::cout << "Player Money: $" << player.money << "\n\n"; 
+        case 'S':
+        case 's': {
+            std::string itemName;
+            int quantity;
 
-        std::cout << "Do you want to sell an item? (yes/no): ";
-        std::string sellResponse;
-        std::getline(std::cin, sellResponse);
-        if (sellResponse == "yes") {
             std::cout << "Enter the name of the item you want to sell: ";
             std::getline(std::cin, itemName);
             std::cout << "Enter quantity: ";
             std::cin >> quantity;
-            std::cin.ignore(); 
+            std::cin.ignore();
 
             merchant.buyItem(itemName, quantity, player.money, player.inventory);
+            player.displayInventory();
+            break;
         }
 
-        player.displayInventory(); 
+        case 'I':
+        case 'i': {
+            player.displayInventory();
+            break;
+        }
+
+        default:
+            std::cout << "Invalid choice. Please try again.\n\n";
+        }
     }
 
-    return 0; 
+    return 0;
 }
