@@ -21,9 +21,9 @@ struct Item {
 };
 
 //Initiate the merchant class
-class Merchant { 
+class Merchant {
 private: //private is only for this class
-    std::vector<Item> inventory; 
+    std::vector<Item> inventory;
     std::vector<Item> animalInventory;
 
 public: // public is to be able to be used for all classes! 
@@ -101,7 +101,7 @@ public: // public is to be able to be used for all classes!
                 playerMoney -= totalCost;
                 std::cout << "Sold " << quantity << " of " << animal.name << ".\n\n";
                 return true; // return true when able to sell the item
-            } 
+            }
         }
         std::cout << itemName << " not found.\n\n";
         return false; // Sale failed for some other reason 
@@ -167,15 +167,15 @@ public: // public is to be able to be used for all classes!
         //the players choice between 1, 2 and 3 and then the default answer
         switch (choice) {
         case 1:
-            std::cout << "\nMikage: I have many items from health potions to powerful weapons for you to use on your adventure " << playerName<< "! \n\n";
+            std::cout << "\nMikage: I have many items from health potions to powerful weapons for you to use on your adventure " << playerName << "! \n\n";
             break;
         case 2: // wanted to really add a spin on things and make the player interested in the life of the merchant!! 
             std::cout << "\nMikage: Ah, As a young prince, I once stood against my parents' oppressive rule, unable to bear their tyranny.\n"
-            "I escaped the royal life, determined to fight against their evil, but for reasons I still do not fully understand, I lost my powers.\n"
-            "So, I have lived as a humble merchant, quietly plotting to thwart their reign.\n"
-            "As a way to get back at me, my such loving parents kidnapped my best friend, holding him hostage within my very own place of my birth.\n"
-            "Over the past few months, I have been uncovering the truth behind my lost strength, and I can feel it awakening within me, one day at a time.\n"
-            "I know that one day soon, I will reclaim my rightful place on the throne and restore justice to my kingdom.\n\n";
+                "I escaped the royal life, determined to fight against their evil, but for reasons I still do not fully understand, I lost my powers.\n"
+                "So, I have lived as a humble merchant, quietly plotting to thwart their reign.\n"
+                "As a way to get back at me, my such loving parents kidnapped my best friend, holding him hostage within my very own place of my birth.\n"
+                "Over the past few months, I have been uncovering the truth behind my lost strength, and I can feel it awakening within me, one day at a time.\n"
+                "I know that one day soon, I will reclaim my rightful place on the throne and restore justice to my kingdom.\n\n";
             break;
         case 3:
             std::cout << "\nMikage: Very well! Let me know if you need anything, I am always here for you! \n\n";
@@ -216,7 +216,7 @@ public:
     }
 }; // make sure to add semicolons when closing
 
- //now that all the classes are written we can get into actually building the code itself
+//now that all the classes are written we can get into actually building the code itself
 
 // Main function to run the game! very important! in my eyes, this is like LUA LOVE2D functions all put together to run what it will do and look like
 int main() {
@@ -230,7 +230,7 @@ int main() {
 
     //welcome message to the player once they type their name in! 
     std::cout << "\nWelcome " << playerName << ", Hero of Gravestone! You currently have $" << player.money << " in your account.\n"
-        << "You can sell items to me at 50% of the original selling price. Sorry, a guys gotta make a living, "<< playerName << ".\n\n";
+        << "You can sell items to me at 50% of the original selling price. Sorry, a guys gotta make a living, " << playerName << ".\n\n";
 
     char choice; // varaible to store all the players choices! i learned that char is used to store one character at a time. so in this case its one choice at a time so the program lets the player press B or S or I or T or E! 
 
@@ -238,6 +238,7 @@ int main() {
     while (true) {
         std::cout << "Press 'B' to buy, 'S' to sell, 'I' to check your inventory, 'T' to talk to Mikage, or 'E' to exit: "; // this cout shows the player the options 
         std::cin >> choice; //cin takes the players choice that they input
+        std::cin.ignore();
 
         if (choice == 'e' || choice == 'E') { // i used both uppercase and lowercase to make it easier for the players
             break; // exit the loop if the player chooses the letter E
@@ -253,6 +254,7 @@ int main() {
             std::getline(std::cin, itemName); // input the items name that the player wants to buy
             std::cout << "Enter quantity: ";
             std::cin >> quantity; // input the quantity
+            std::cin.ignore();
 
             if (merchant.sellItem(itemName, quantity, player.money)) {
                 player.addItem(itemName, merchant.getItemPrice(itemName), quantity); // add the item to the players inventory if the sale is successful! 
