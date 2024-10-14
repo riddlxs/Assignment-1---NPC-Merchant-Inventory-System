@@ -8,6 +8,8 @@
 #include <string>
 #include <algorithm>
 
+
+
 // structure to represent an item
 struct Item {
     std::string name; // Name of the item
@@ -46,6 +48,16 @@ public: // public is to be able to be used for all classes!
         pets.push_back(Item("Pumpkin the Orange Cat", 100.0f, 1, "Buff: Luck")); // these buffs do nothing, theyre just for show
         pets.push_back(Item("Conor the Black Lab", 100.0f, 1, "Buff: Strength"));
     }
+
+    void displayMerchantCard() const { //we must include the merchants player card in their class so the user can call upon it in main
+        std::cout << "Merchant Name: Prince Mikage \n"; //unlike the players card, the merchant has all preset responses on his card since he is an NPC. the player has cin responses for their card
+        std::cout << "Merchant Money: $7,000\n";
+        std::cout << "Merchant Inventory: White Wind Wand - Quantity: 1 \n";
+        std::cout << "Picture of best friend - Quantity: 1 \n";
+        std::cout << "Mana Berries - Quantity: 11 \n";
+        std::cout << "Mikage House Cegil - Quantity: 1 \n";
+    }
+
     // display the merchant inventory with all the different categories!
     void displayInventory() const { //const = constant! it is unchangeable! 
         std::cout << "Merchant Inventory:\n";
@@ -433,7 +445,16 @@ public:
         for (const auto& item : inventory) {
             std::cout << item.name << " - Quantity: " << item.quantity << "\n"; // show the item and the amount they own
         }
-        std::cout << "\n"; // this just makes another line, easier to read on my end! \n is a lifesaver
+        std::cout << "\n";
+    }
+
+    void displayPlayerCard(const std::string& playerName) const { //new feature, adding player cards that show the name, amount of money, inventory, and some cool facts about the player that were added at the beginning of the game! 
+        std::cout << "Player Name: " << playerName << "\n"; //player name
+        std::cout << "Player Money: $" << money << "\n"; //player money
+        std::cout << "Player Inventory:\n"; //player inventory
+        for (const auto& item : inventory) { //this is for the inventory, the name and quantity the player owns
+            std::cout << "- " << item.name << ": " << item.quantity << "\n";
+        }
     }
 }; // make sure to add semicolons when closing
 
@@ -459,7 +480,7 @@ int main() {
 
     //main game loop required in the assignment! it brings the player back to this 'main menu' where they can choose from these options
     while (true) {
-        std::cout << "Press 'B' to buy, 'S' to sell, 'I' to check your inventory, 'T' to talk to Mikage, or 'E' to exit: "; // this cout shows the player the options 
+        std::cout << "Press 'B' to buy, 'S' to sell, 'I' to check your inventory, 'T' to talk to Mikage, 'P' to view your player card, 'M' to view merchant card, or 'E' to exit: "; // this cout shows the player the options 
         std::cout << "\n\n";
         std::cin >> choice; //cin takes the players choice that they input
         std::cin.ignore();
@@ -512,6 +533,16 @@ int main() {
             merchant.talkToMikage(playerName);  // lets the player talk to the merchant by pressing t 
             break;
         }
+        case 'P': // displays the players player card, including all their information by pressing the p button for player 
+        case 'p': {
+            player.displayPlayerCard(playerName); //calling upon the variable displayplayercard, in which, displays the player card. player is included before because it is part of the players class!
+            break;
+        }
+        case 'M':
+        case 'm': {
+            merchant.displayMerchantCard(); // displays the merchants player card, including all their information by pressing the m for merchant
+            break; //calling upon the variable displaymerchantcard, in which, displays the merchants card. merchant is included before because it is part of the merchant class, just like the players above!
+        }
 
         default:
             std::cout << "\nInvalid choice. Please try again.\n\n"; // any other option brings the player here. this is like an else statement from what i learned
@@ -523,3 +554,5 @@ int main() {
 
 //bugs: whenever user is on the buy page and inserts their object they would like to purchase, screen shows the quantity. when user inputs their quantity as a letter instead of a number code keeps repeating itself in endless loop. 
 // future updates i want to add to build my knowledge: more mikage dialogue, character information cards sound fun, maybe adding an option to continue the story or interacting with more of the outside world! (make sure that sir is okay with this first)
+
+// NEED TO ADD ONTO PLAYER CARD BY ADDING PRE ASKED QUESTIONS AFTER USER INSERTS THEIR NAME!
