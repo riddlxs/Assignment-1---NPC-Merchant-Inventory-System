@@ -22,6 +22,17 @@ struct Item {
         : name(n), price(p), quantity(q), buffDescription(buff) {}
 };
 
+struct PlayerInfo { //adding additional information about the player to their player card! need to string these and add them into a struct
+    std::string name;
+    std::string birthday;
+    std::string favouriteColour;
+    std::string favouriteFood;
+    std::string favouriteAnimal;
+    std::string VideoGame;
+    std::string favouriteSeason;
+    std::string favouritePerson;
+};
+
 //Initiate the merchant class
 class Merchant {
 private:
@@ -50,12 +61,22 @@ public: // public is to be able to be used for all classes!
     }
 
     void displayMerchantCard() const { //we must include the merchants player card in their class so the user can call upon it in main
-        std::cout << "Merchant Name: Prince Mikage \n"; //unlike the players card, the merchant has all preset responses on his card since he is an NPC. the player has cin responses for their card
+        std::cout << "\nMerchant Name: Prince Mikage \n"; //unlike the players card, the merchant has all preset responses on his card since he is an NPC. the player has cin responses for their card
         std::cout << "Merchant Money: $7,000\n";
         std::cout << "Merchant Inventory: White Wind Wand - Quantity: 1 \n";
         std::cout << "Picture of best friend - Quantity: 1 \n";
         std::cout << "Mana Berries - Quantity: 11 \n";
-        std::cout << "Mikage House Cegil - Quantity: 1 \n";
+        std::cout << "Mikage House Cegil - Quantity: 1 \n\n";
+
+        std::cout << "\n--- Merchant Facts ---\n";
+        std::cout << "Birthday: " "08/12 ""\n";
+        std::cout << "Favourite Colour: " "Purple ""\n";
+        std::cout << "Favourite Food: " "Octopus Balls ""\n";
+        std::cout << "Favourite Animal: " "Chameleon""\n";
+        std::cout << "Favourite Video Game: " "Fifa ""\n";
+        std::cout << "Favourite Season: " "Summer""\n";
+        std::cout << "Favourite Person: " "His best friend""\n";
+        std::cout << "-----------------------\n";
     }
 
     // display the merchant inventory with all the different categories!
@@ -272,8 +293,8 @@ public: // public is to be able to be used for all classes!
     }
 
     // feature i added extra, to able the player to talk to the merchant! creates a more deeper story within the NPC Inventory
-    void talkToMikage(const std::string& playerName) const {
-        std::cout << "Mikage: Greetings, " << playerName << ". I am Mikage, the merchant of these lands. What would you like to know?\n" // firts thing it shows the player
+    void talkToMikage(const std::string& playerName) const { //for some reason, its not letting me change the playername variable to the playerinfo one i was using because its in talktomikage. im still not sure how to fix this, or why it wont let me change it
+        std::cout << "\nMikage: Greetings, " << playerName << " I am Mikage, the merchant of these lands.What would you like to know ? \n" // firts thing it shows the player
             << "\n1. Tell me about your items.\n" //items
             << "2. What's your story?\n" //deep story of mikage merchant
             << "3. Just browsing.\n"; // an 'escape' path back to main 'menu'
@@ -385,7 +406,7 @@ public: // public is to be able to be used for all classes!
                 case 1: // more lore about NPC can help me build a storyline to help with the growing of my code! This will also help me learn new commands that help me build onto different senarios. 
                     std::cout << "\nYou: Mikage, I was born like you. I have secret powers that can help us. My whole journey was to destroy your parents rule, with these powers i have been gifted to by god.\n" //reveal in the story, to keep the players entertained!
                         << "I have the ability to wield and bend elements to my will, slowly learning how to control them to my liking. I promise you, I will help you rescue your bestfriend, regain your powers, and your throne.\n"
-                        << "Mikage: You are the same as I am... Thank you, I could never begin to repay the kindness you have shown me. \n";
+                        << "\nMikage: You are the same as I am... Thank you, I could never begin to repay the kindness you have shown me. \n\n";
                     break;
 
                 case 2:
@@ -425,6 +446,7 @@ class Player { //no private included since nothing is only to be used by the pla
 public:
     float money; // players money! i use float, since floats can add decimals used for money
     std::vector<Item> inventory; // players inventory of items! 
+    PlayerInfo playerInfo;
 
     Player() : money(100.0f) {} // initializing the players money at $100
 
@@ -448,21 +470,31 @@ public:
         std::cout << "\n";
     }
 
-    void displayPlayerCard(const std::string& playerName) const { //new feature, adding player cards that show the name, amount of money, inventory, and some cool facts about the player that were added at the beginning of the game! 
-        std::cout << "Player Name: " << playerName << "\n"; //player name
-        std::cout << "Player Money: $" << money << "\n"; //player money
-        std::cout << "Player Inventory:\n"; //player inventory
-        for (const auto& item : inventory) { //this is for the inventory, the name and quantity the player owns
+    void displayPlayerCard() const {
+        std::cout << "\nPlayer Name: " << playerInfo.name << "\n"; // Player name! i changed the variable to playerInfo.name since i found it easier to work with, with all of the other infos i added from the player card
+        std::cout << "Player Money: $" << money << "\n"; // Player money
+        std::cout << "Player Inventory:\n"; // Player inventory
+        for (const auto& item : inventory) { // Display the inventory items
             std::cout << "- " << item.name << ": " << item.quantity << "\n";
         }
-    }
+
+        // Displaying the player facts
+        std::cout << "\n--- Player Facts ---\n";
+        std::cout << "Birthday: " << playerInfo.birthday << "\n";
+        std::cout << "Favourite Colour: " << playerInfo.favouriteColour << "\n";
+        std::cout << "Favourite Food: " << playerInfo.favouriteFood << "\n";
+        std::cout << "Favourite Animal: " << playerInfo.favouriteAnimal << "\n";
+        std::cout << "Favourite Music: " << playerInfo.VideoGame << "\n";
+        std::cout << "Favourite Season: " << playerInfo.favouriteSeason << "\n";
+        std::cout << "Favourite Person: " << playerInfo.favouritePerson << "\n";
+        std::cout << "-----------------------\n";
+        }
 }; // make sure to add semicolons when closing
 
 //now that all the classes are written we can get into actually building the code itself
 
 // Main function to run the game! very important! in my eyes, this is like LUA LOVE2D functions all put together to run what it will do and look like
 int main() {
-    std::string playerName;  //variable holding the players inputted name
     Player player; // create a player object and merchant object
     Merchant merchant;
      
@@ -470,17 +502,40 @@ int main() {
  
     // get the players name by asking them and then getting the cin they type
     std::cout << "Enter your name: ";
-    std::getline(std::cin, playerName);
+    std::getline(std::cin, player.playerInfo.name); //now i must use this variable instead of playerName
+
+    std::cout << "\nNice to meet you, " << player.playerInfo.name <<". I have a couple questions to ask you. Choose wisely. \n";
+
+    std::cout << "\nEnter your birthday, MM/DD: ";
+    std::getline(std::cin, player.playerInfo.birthday);
+
+    std::cout << "Enter your favourite colour: ";
+    std::getline(std::cin, player.playerInfo.favouriteColour);
+
+    std::cout << "Enter your favourite food: ";
+    std::getline(std::cin, player.playerInfo.favouriteFood);
+
+    std::cout << "Enter your favourite animal: ";
+    std::getline(std::cin, player.playerInfo.favouriteAnimal);
+
+    std::cout << "Enter your favourite video game: ";
+    std::getline(std::cin, player.playerInfo.VideoGame);
+
+    std::cout << "Enter your favourite season: ";
+    std::getline(std::cin, player.playerInfo.favouriteSeason);
+
+    std::cout << "Enter your favourite person: ";
+    std::getline(std::cin, player.playerInfo.favouritePerson);
 
     //welcome message to the player once they type their name in! 
-    std::cout << "\nMikage: Welcome " << playerName << ", Hero of Gravestone! You currently have $" << player.money << " in your account.\n"
-        << "You can sell items to me at 50% of the original selling price. Sorry, a guys gotta make a living, " << playerName << ". \nRemember,everything is case sensitive, so insert the names of the items you want to buy/sell with correct capitilzation! \n\n";
+    std::cout << "\nMikage: Welcome " << player.playerInfo.name << ", Hero of Gravestone! You currently have $" << player.money << " in your account.\n" //once again, used a different variable to pull up the name, and i put player. infront of it since i am calling it from the player class
+        << "You can sell items to me at 50% of the original selling price. Sorry, a guys gotta make a living, " << player.playerInfo.name << ". \nRemember,everything is case sensitive, so insert the names of the items you want to buy/sell with correct capitilzation! \n\n";
 
-    char choice; // varaible to store all the players choices! i learned that char is used to store one character at a time. so in this case its one choice at a time so the program lets the player press B or S or I or T or E! 
+    char choice; // variable to store all the players choices! i learned that char is used to store one character at a time. so in this case its one choice at a time so the program lets the player press B or S or I or T or E! 
 
     //main game loop required in the assignment! it brings the player back to this 'main menu' where they can choose from these options
     while (true) {
-        std::cout << "Press 'B' to buy, 'S' to sell, 'I' to check your inventory, 'T' to talk to Mikage, 'P' to view your player card, 'M' to view merchant card, or 'E' to exit: "; // this cout shows the player the options 
+        std::cout << "\nPress 'B' to buy, 'S' to sell, 'I' to check your inventory, 'T' to talk to Mikage, 'P' to view your player card, 'M' to view merchant card, or 'E' to exit: "; // this cout shows the player the options 
         std::cout << "\n\n";
         std::cin >> choice; //cin takes the players choice that they input
         std::cin.ignore();
@@ -530,12 +585,12 @@ int main() {
 
         case 'T':
         case 't': {
-            merchant.talkToMikage(playerName);  // lets the player talk to the merchant by pressing t 
+            merchant.talkToMikage(player.playerInfo.name); // lets the player talk to the merchant by pressing t 
             break;
         }
         case 'P': // displays the players player card, including all their information by pressing the p button for player 
         case 'p': {
-            player.displayPlayerCard(playerName); //calling upon the variable displayplayercard, in which, displays the player card. player is included before because it is part of the players class!
+            player.displayPlayerCard(); //calling upon the variable displayplayercard, in which, displays the player card. player is included before because it is part of the players class!
             break;
         }
         case 'M':
@@ -553,6 +608,5 @@ int main() {
 }
 
 //bugs: whenever user is on the buy page and inserts their object they would like to purchase, screen shows the quantity. when user inputs their quantity as a letter instead of a number code keeps repeating itself in endless loop. 
-// future updates i want to add to build my knowledge: more mikage dialogue, character information cards sound fun, maybe adding an option to continue the story or interacting with more of the outside world! (make sure that sir is okay with this first)
-
-// NEED TO ADD ONTO PLAYER CARD BY ADDING PRE ASKED QUESTIONS AFTER USER INSERTS THEIR NAME!
+//not letting me change the playername variable to the playerinfo one I am using now because its in talktomikage. still not sure how to fix this, or why it wont let me change it.
+//future updates i want to add to build my knowledge: adding an option to continue the story or interacting with more of the outside world! (make sure that sir is okay with this first)
