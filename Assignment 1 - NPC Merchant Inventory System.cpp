@@ -268,6 +268,7 @@ public: // public is to be able to be used for all classes!
 
         int choice;
         std::cin >> choice; // cin for inserting the players choice
+        std::cin.ignore();
 
         //the players choice between 1, 2 and 3 and then the default answer
         switch (choice) {
@@ -278,15 +279,131 @@ public: // public is to be able to be used for all classes!
             std::cout << "\nMikage: Ah, as a young prince, I once stood against my parents' oppressive rule, unable to bear their tyranny.\n"
                  "I escaped the royal life, determined to fight against their evil, but for reasons I still do not fully understand, I lost my powers.\n"
                 "So, I have lived as a humble merchant, quietly plotting to thwart their reign.\n"
-                "As a way to get back at me, my loving parents kidnapped my best friend, holding him hostage within my very own place of birth.\n"
+                "My loving parents kidnapped my best friend, holding him hostage within my very own place of birth.\n"
                  "Over the past few months, I have been uncovering the truth behind my lost strength, and I can feel it awakening within me, one day at a time.\n"
                 "I know that one day soon, I will reclaim my rightful place on the throne and restore justice to my kingdom.\n\n";
+            askMoreAboutMikage(); //input another loop to let the player continue to ask mikage questions! only require this to be added here since it dives more into his story, and not the other options like what he sells or 'just browsing'
             break;
         case 3:
             std::cout << "\nMikage: Very well! Let me know if you need anything, I am always here for you! \n\n";
             break;
         default:
             std::cout << "\nMikage: I don't understand that. What do you mean, young hero?\n\n";
+        }
+    }
+    void askMoreAboutMikage() const { //need to initialize the askmore feature provided above
+        std::cout << //all options are the same as before, the basic cout line, then the 3 options, then the switch cases on what the mikage will respond with depending on what the player chooses
+       "1. Mikage... please tell me more about your story.\n" // i want to keep building loops like in real videogames, where the player must choose between options to make realistic dialogue
+            << "2. Just browsing.\n";
+
+        int choice; //stores the choice
+        std::cin >> choice; //needs cin instead of cout. cin lets the user input their option into the code to be able to run the choice they choose
+        std::cin.ignore();
+
+        switch (choice) {
+        case 1:
+            std::cout << "\nMikage: If you really want to hear, here's my full story.\n"
+                << "My name is Mikage, and from a young age, I possessed supernatural powers that set me apart.\n"
+                << "But instead of being celebrated, I was surrounded by people who cared more about my royal status than about me.\n"
+                << "My parents saw me as only royal blood to hold their grip on power even after death.\n"
+                << "To them, I was just a means to an end, and the so called friends I had were only drawn to me by fear or ambition.\n"
+                << "To escape the suffocating weight of their expectations, I found solace in the woods that bordered the castle.\n"
+                << "There, I practiced my powers in secret, yearning to harness them fully.\n"
+                << "But my parents loathed my abilities, calling them dangerous.\n"
+                << "They wanted me to be their perfect heir, and in order for that to happen, I had to control the chaos within me.\n"
+                << "One night, everything for once went right.\n"
+                << "In a moment of recklessness, I lost control during a training session.\n"
+                << "A surge of energy erupted from within me, and I was left injured and unconscious on the forest grass.\n"
+                << "When I finally woke up, I found myself bandaged and tended to by a stranger drawing in the dirt.\n"
+                << "He was my age, just over 14 years old, but he knew how to medically save someone, cook meals, and make shelter. It made me wonder just how long he has been living alone.\n"
+                << "\"Who are you?\" I croaked, confused and suspicious.\n" // learned that \ includes "" ! so it can be used for people saying things within story! 
+                << "\"Did you help me for fame? For money? I don’t need your charity.\"\n"
+                << "The stranger looked up with a gentle smile, his white, messy hair moving just above his eyes.\n"
+                << "\"I don’t even know who you are. I just saw you hurt and wanted to help.\ He spoke. His body spoke nothing but the truth as he went back to staring at the dirt.\n"
+                << "That simple honesty struck a chord deep within me.\n"
+                << "For the first time, someone cared for me without wanting something in return.\n"
+                << "That day I gave him money, as much money as I could spare. He started living in town, and we started hanging out in secret.\n"
+                << "We explored the woods, shared stories, and laughed freely. Something I was never allowed to do as a prince.\n"
+                << "With their encouragement, I trained harder than ever, feeling a spark of hope.\n"
+                << "Maybe I could make a difference.\n"
+                << "As my nineteenth birthday approached, the desire for rebellion ignited within me.\n"
+                << "I could no longer ignore the suffering of my people.\n"
+                << "We made plans to escape the castle and rally others to our cause.\n"
+                << "But just as we were about to act, fate intervened.\n"
+                << "My bestfriend was kidnapped by my parents, who threatened to kill them if I didn’t return to the castle.\n"
+                << "I felt torn apart.\n"
+                << "My parents did not care about me; they only wanted to use me and him as pawns.\n"
+                << "Desperate to rescue them, I tried confronting my parents that night.\n"
+                << "As soon as I came home, they tried killing him. In the heat of the moment, I grew angry, and my powers surged wildly, but instead of harnessing them, they exploded out of control.\n"
+                << "I woke up here, teleported away with the use of my powers, unable to use my powers, and unable to speak my bestfriends name.\n"
+                << "Ive tried returning home to rescue him, but for some reason I cant remember how to get home.\n"
+                << "My powers did something to me, and I dont know how or what. My memories are slowly dissapearing day by day.\n"
+                << "Now powerless and alone, I became a merchant, moving through the bustling market with a hollow smile while secretly searching for a way to regain my abilities and rescue them.\n";
+
+            std::cout << "\nWould you like to know more? \n"
+                << "1. Tell me more about your best friend, Mikage.\n"
+                << "2. I will help you return home.\n"
+                << "3. Goodbye.\n";
+
+            int additionalChoiceMikage; // stores additional choice, this is just like askmoreaboutmikage variable, but its for after mikage tells you his story. this is for deeper conversation, to ask more about his story. This only appears if you follow the certain steps, like asking mikage about his full story.
+            std::cin >> additionalChoiceMikage; // input for the additional choice, whatever number the user types in, it spits out the case number! same as before! 
+            std::cin.ignore();
+
+            switch (additionalChoiceMikage) {
+            case 1: // include more about his bestfriend to make the player build a connection to the NPC
+                std::cout << "\nMikage: My best friend was the only one who truly cared for me. We shared everything, our hopes and dreams.\n"
+                    << "He was brave, always standing by me, and losing him feels like losing a part of myself.\n"
+                    << "His laughter could light up my darkest days, and now, without him, there's a void I can't fill.\n"
+                    << "I replay our memories, longing for his smile, knowing that everyday I slowly forget what he looks like.\n"; "\n\n";
+                break;
+
+            case 2:
+                std::cout <<"\nMikage : You would actually help me return home? That truly means the world to me. I’ve been slowly losing hope...\n"
+                    << "I cannot remember the way back, but with your help, I believe we can uncover the way together. The only problem, is my lack of powers...\n\n";
+               
+                //add an additional conversation to keep it going
+                std::cout << "1. I have powers that can help.\n"
+                    << "2. Goodbye.\n";
+
+                int playerChoice; //player choice, another variable just like the others, it is included within the additionalchoicemikage so nothing will clash!
+                std::cin >> playerChoice; // the usual cin input
+                std::cin.ignore();
+
+                switch (playerChoice) { //another switch with another variable, just like all the others above :)
+                case 1: // more lore about NPC can help me build a storyline to help with the growing of my code! This will also help me learn new commands that help me build onto different senarios. 
+                    std::cout << "\nYou: Mikage, I was born like you. I have secret powers that can help us. My whole journey was to destroy your parents rule, with these powers i have been gifted to by god.\n" //reveal in the story, to keep the players entertained!
+                        << "I have the ability to wield and bend elements to my will, slowly learning how to control them to my liking. I promise you, I will help you rescue your bestfriend, regain your powers, and your throne.\n"
+                        << "Mikage: You are the same as I am... Thank you, I could never begin to repay the kindness you have shown me. \n";
+                    break;
+
+                case 2:
+                    std::cout << "\n Goodbye. \n";
+                    break;
+
+                default:
+                    std::cout << "\nMikage: I don't understand that. What do you mean, young hero?\n";
+                    break;
+                }
+                break; // break again since this is the end of this specific story route! 
+
+            case 3:
+                std::cout << "\nMikage: Goodbye.\n\n";
+                break;
+
+            default:
+                std::cout << "\nMikage: I don't understand that. What do you mean, young hero?\n\n";
+                break;
+            }
+            break; //needs another break since this is the end of case 1
+
+            // these are the basic responses if the player does not want to learn more about mikage! They are structured like the responses from the varaible talkToMikage!
+        case 2:
+            std::cout << "\nMikage: Very well! Let me know if you need anything.\n\n";
+            break;
+
+        default: //like before, an almost else statement, where if all else fails, if the user doesnt put in those options, it spits out this! 
+            std::cout << "\nMikage: I don't understand that. What do you mean, young hero?\n\n";
+            break;
         }
     }
 };
@@ -343,6 +460,7 @@ int main() {
     //main game loop required in the assignment! it brings the player back to this 'main menu' where they can choose from these options
     while (true) {
         std::cout << "Press 'B' to buy, 'S' to sell, 'I' to check your inventory, 'T' to talk to Mikage, or 'E' to exit: "; // this cout shows the player the options 
+        std::cout << "\n\n";
         std::cin >> choice; //cin takes the players choice that they input
         std::cin.ignore();
 
@@ -404,4 +522,4 @@ int main() {
 }
 
 //bugs: whenever user is on the buy page and inserts their object they would like to purchase, screen shows the quantity. when user inputs their quantity as a letter instead of a number code keeps repeating itself in endless loop. 
-// future updates i want to add to build my knowledge: more mikage dialogue, character information cards sound fun, maybe adding an option to continue the story or interacting with more of the outside world! (make sir that sir is okay with this first)
+// future updates i want to add to build my knowledge: more mikage dialogue, character information cards sound fun, maybe adding an option to continue the story or interacting with more of the outside world! (make sure that sir is okay with this first)
