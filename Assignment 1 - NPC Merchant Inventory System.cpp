@@ -10,46 +10,70 @@
 
 // structure to represent an item
 struct Item {
-    std::string name; // name of the item
-    float price; // price of the item
-    int quantity; // quantity available of the item
-    std::string buffDescription; // description of the buffs
+    std::string name; // Name of the item
+    float price; // Price of the item
+    int quantity; // Quantity available of the item
+    std::string buffDescription; // Description of the buffs
 
-    //constructor to initialize an Item
+    // Constructor to initialize item!
     Item(std::string n, float p, int q, std::string buff = "")
         : name(n), price(p), quantity(q), buffDescription(buff) {}
 };
 
 //Initiate the merchant class
 class Merchant {
-private: //private is only for this class
-    std::vector<Item> inventory;
-    std::vector<Item> animalInventory;
+private:
+    std::vector<Item> weapons; //must now create 4 new items, they must stay private since it cant be changed from the merchants inventory, where as the players can be changed
+    std::vector<Item> potions;
+    std::vector<Item> food;
+    std::vector<Item> pets;
 
 public: // public is to be able to be used for all classes! 
-    Merchant() {
-        inventory.push_back(Item("Throwing Knife", 15.0f, 22)); //push_back is better than emplace_back sir says. Push uses the copy. 
-        inventory.push_back(Item("Health Potion", 5.0f, 10));
-        inventory.push_back(Item("Shield", 16.0f, 1));
-        inventory.push_back(Item("Mage's Lost Wand", 23.0f, 1));
-        inventory.push_back(Item("Cooked Chicken", 8.0f, 7));
-        inventory.push_back(Item("Ring of Protection", 21.0f, 1));
-        inventory.push_back(Item("Mana Potion", 6.0f, 5));
+    Merchant() { 
+     
+        //added new specific categories within merchants inventory for easier access
+        weapons.push_back(Item("Throwing Knife", 15.0f, 22)); //push_back is better than emplace_back sir says. Push uses the copy
+        weapons.push_back(Item("Shield", 16.0f, 1));
+        weapons.push_back(Item("Mage's Lost Wand", 23.0f, 1));
+        weapons.push_back(Item("Ring of Protection", 21.0f, 1));
 
-        animalInventory.push_back(Item("Riley the Black Cat", 100.0f, 1, "Buff: Stealth")); // wanted to make a seperate inventory for animals still all within the merchant class
-        animalInventory.push_back(Item("Pumpkin the Orange Cat", 100.0f, 1, "Buff: Luck")); // these buffs do nothing, theyre just for show
-        animalInventory.push_back(Item("Conor the Black Lab", 100.0f, 1, "Buff: Strength"));
+        potions.push_back(Item("Health Potion", 5.0f, 10));
+        potions.push_back(Item("Mana Potion", 6.0f, 5));
+
+        food.push_back(Item("Cooked Chicken", 8.0f, 7));
+
+        pets.push_back(Item("Riley the Black Cat", 100.0f, 1, "Buff: Stealth")); 
+        pets.push_back(Item("Pumpkin the Orange Cat", 100.0f, 1, "Buff: Luck")); // these buffs do nothing, theyre just for show
+        pets.push_back(Item("Conor the Black Lab", 100.0f, 1, "Buff: Strength"));
     }
-
-    // display the merchant inventory and animals
+    // display the merchant inventory with all the different categories!
     void displayInventory() const { //const = constant! it is unchangeable! 
         std::cout << "Merchant Inventory:\n";
-        for (const auto& item : inventory) { //auto makes it easier to cycle through the items !!!
+
+        // Display weapons! (i will be doing the same thing for all categories just with the different names!)
+        std::cout << "\nWeapons:\n";
+        for (const auto& item : weapons) { //auto makes it easier to cycle through the items !!!
             std::cout << item.name << " - Price: $" << item.price
                 << ", Quantity: " << (item.quantity > 0 ? std::to_string(item.quantity) : "SOLD OUT") << "\n";
         }
+
+        // Display potions!
+        std::cout << "\nPotions:\n";
+        for (const auto& item : potions) {
+            std::cout << item.name << " - Price: $" << item.price
+                << ", Quantity: " << (item.quantity > 0 ? std::to_string(item.quantity) : "SOLD OUT") << "\n";
+        }
+
+        // Display food!
+        std::cout << "\nFood:\n";
+        for (const auto& item : food) {
+            std::cout << item.name << " - Price: $" << item.price
+                << ", Quantity: " << (item.quantity > 0 ? std::to_string(item.quantity) : "SOLD OUT") << "\n";
+        }
+
+        // Display pets!
         std::cout << "\nAnimal Inventory:\n";
-        for (const auto& animal : animalInventory) {
+        for (const auto& animal : pets) {
             std::cout << animal.name << " - Price: $" << animal.price
                 << ", Quantity: " << (animal.quantity > 0 ? std::to_string(animal.quantity) : "SOLD OUT")
                 << " (" << animal.buffDescription << ")\n";
@@ -59,7 +83,9 @@ public: // public is to be able to be used for all classes!
 
     // function to sell the items
     bool sellItem(const std::string& itemName, int quantity, float& playerMoney) {
-        for (auto& item : inventory) {
+
+        // Check weapons inventory (this will all be formatted the same way for the other 3 groups)
+        for (auto& item : weapons) {
             if (item.name == itemName) {
                 if (item.quantity == 0) {
                     std::cout << item.name << " is SOLD OUT.\n\n";
@@ -67,7 +93,7 @@ public: // public is to be able to be used for all classes!
                 }
                 if (item.quantity < quantity) {
                     std::cout << "Not enough " << item.name << " in stock.\n\n";
-                    return false;  // Not enough quantity
+                    return false;// Not enough quantity
                 }
                 float totalCost = item.price * quantity;
                 if (playerMoney < totalCost) {
@@ -81,40 +107,97 @@ public: // public is to be able to be used for all classes!
             }
         }
 
-        // check to see if item is in the animal inventory now! 
-        for (auto& animal : animalInventory) {
+        // Check potions inventory
+        for (auto& item : potions) {
+            if (item.name == itemName) {
+                if (item.quantity == 0) {
+                    std::cout << item.name << " is SOLD OUT.\n\n";
+                    return false;
+                }
+                if (item.quantity < quantity) {
+                    std::cout << "Not enough " << item.name << " in stock.\n\n";
+                    return false;
+                }
+                float totalCost = item.price * quantity;
+                if (playerMoney < totalCost) {
+                    std::cout << "Not enough money to buy " << quantity << " of " << item.name << ".\n\n";
+                    return false;
+                }
+                item.quantity -= quantity;
+                playerMoney -= totalCost;
+                std::cout << "Sold " << quantity << " of " << item.name << ".\n\n";
+                return true;
+            }
+        }
+
+        // Check food inventory
+        for (auto& item : food) {
+            if (item.name == itemName) {
+                if (item.quantity == 0) {
+                    std::cout << item.name << " is SOLD OUT.\n\n";
+                    return false;
+                }
+                if (item.quantity < quantity) {
+                    std::cout << "Not enough " << item.name << " in stock.\n\n";
+                    return false;
+                }
+                float totalCost = item.price * quantity;
+                if (playerMoney < totalCost) {
+                    std::cout << "Not enough money to buy " << quantity << " of " << item.name << ".\n\n";
+                    return false;
+                }
+                item.quantity -= quantity;
+                playerMoney -= totalCost;
+                std::cout << "Sold " << quantity << " of " << item.name << ".\n\n";
+                return true;
+            }
+        }
+
+        // check animal inventory
+        for (auto& animal : pets) {
             if (animal.name == itemName) {
                 if (animal.quantity == 0) {
                     std::cout << animal.name << " is SOLD OUT.\n\n";
-                    return false; // Animal is sold out
+                    return false; 
                 }
                 if (animal.quantity < quantity) {
                     std::cout << "Not enough " << animal.name << " in stock.\n\n";
-                    return false; // Not enough quantity
+                    return false; 
                 }
                 float totalCost = animal.price * quantity;
                 if (playerMoney < totalCost) {
                     std::cout << "Not enough money to buy " << quantity << " of " << animal.name << ".\n\n";
-                    return false; // Not enough money
+                    return false; 
                 }
                 animal.quantity -= quantity;
                 playerMoney -= totalCost;
                 std::cout << "Sold " << quantity << " of " << animal.name << ".\n\n";
-                return true; // return true when able to sell the item
+                return true; 
             }
         }
+
         std::cout << itemName << " not found.\n\n";
-        return false; // Sale failed for some other reason 
+        return false; // Sale failed for some other reason
     }
 
     // Function to get the price of an item by name
     float getItemPrice(const std::string& itemName) const {
-        for (const auto& item : inventory) {
+        for (const auto& item : weapons) {
             if (item.name == itemName) {
-                return item.price; // return the price if found for items
+                return item.price; // return the price if found for weapons
             }
         }
-        for (const auto& animal : animalInventory) {
+        for (const auto& item : potions) {
+            if (item.name == itemName) {
+                return item.price; // return the price if found for potions
+            }
+        }
+        for (const auto& item : food) {
+            if (item.name == itemName) {
+                return item.price; // return the price if found for food
+            }
+        }
+        for (const auto& animal : pets) {
             if (animal.name == itemName) {
                 return animal.price; // return the price if found for animals
             }
@@ -124,7 +207,6 @@ public: // public is to be able to be used for all classes!
 
     //Function to buy an item from the player !
     void buyItem(const std::string& itemName, int quantity, float& playerMoney, std::vector<Item>& playerInventory) {
-        //check to see if the item is in the players inventory first
         for (auto& item : playerInventory) {
             if (item.name == itemName) {
                 if (item.quantity < quantity) {
@@ -133,22 +215,45 @@ public: // public is to be able to be used for all classes!
                 }
                 float sellPrice = item.price * 0.5f; // its basically saying x by 0.5 which is 50 percent lower when sold back to the merchant, wanted to add this to make it seem more realistic! 
                 playerMoney += sellPrice * quantity; // add the money to the players account
-                item.quantity -= quantity; // deduct the quantity 
-                if (item.quantity == 0) { // remove from players inventory if quanity reaches 0! 
+                item.quantity -= quantity; // deduct the quantity
+                if (item.quantity == 0) { // remove from players inventory if quanity reaches 0!
                     playerInventory.erase(std::remove_if(playerInventory.begin(), playerInventory.end(),
                         [&item](const Item& i) { return i.name == item.name; }),
                         playerInventory.end());
                 }
-                for (auto& merchantItem : inventory) { // does this item already exsist in the merchants inventory?
+
+                // Check if item exists in merchant's inventory
+                for (auto& merchantItem : weapons) {
                     if (merchantItem.name == itemName) { // == means if its the same thing! 
-                        merchantItem.quantity += quantity; // increase the merchants quantity 
+                        merchantItem.quantity += quantity; // increase the merchants quantity
                         std::cout << "Bought " << quantity << " of " << item.name << " from you.\n\n";
                         return; // if the buying is successful and the player has enough to purchase
                     }
                 }
-                inventory.push_back(Item(item.name, sellPrice, quantity)); // if not found, add to the merchants inventory by using pushback which copies it
+                for (auto& merchantItem : potions) {
+                    if (merchantItem.name == itemName) {
+                        merchantItem.quantity += quantity;
+                        std::cout << "Bought " << quantity << " of " << item.name << " from you.\n\n";
+                        return;
+                    }
+                }
+                for (auto& merchantItem : food) {
+                    if (merchantItem.name == itemName) {
+                        merchantItem.quantity += quantity;
+                        std::cout << "Bought " << quantity << " of " << item.name << " from you.\n\n";
+                        return;
+                    }
+                }
+                for (auto& merchantItem : pets) {
+                    if (merchantItem.name == itemName) {
+                        merchantItem.quantity += quantity;
+                        std::cout << "Bought " << quantity << " of " << item.name << " from you.\n\n";
+                        return;
+                    }
+                }
+                weapons.push_back(Item(item.name, sellPrice, quantity));
                 std::cout << "Bought " << quantity << " of " << item.name << " from you.\n\n";
-                return; // if the buying is successful 
+                return;
             }
         }
         std::cout << itemName << " not found in your inventory.\n\n"; // the item was not found!
@@ -156,10 +261,10 @@ public: // public is to be able to be used for all classes!
 
     // feature i added extra, to able the player to talk to the merchant! creates a more deeper story within the NPC Inventory
     void talkToMikage(const std::string& playerName) const {
-        std::cout << "Mikage: Greetings, " << playerName << ". I am Mikage, the merchant of these lands. What would you like to know?\n"
-            << "\n1. Tell me about your items.\n"
-            << "2. What's your story?\n"
-            << "3. Just browsing.\n";
+        std::cout << "Mikage: Greetings, " << playerName << ". I am Mikage, the merchant of these lands. What would you like to know?\n" // firts thing it shows the player
+            << "\n1. Tell me about your items.\n" //items
+            << "2. What's your story?\n" //deep story of mikage merchant
+            << "3. Just browsing.\n"; // an 'escape' path back to main 'menu'
 
         int choice;
         std::cin >> choice; // cin for inserting the players choice
@@ -169,25 +274,25 @@ public: // public is to be able to be used for all classes!
         case 1:
             std::cout << "\nMikage: I have many items from health potions to powerful weapons for you to use on your adventure " << playerName << "! \n\n";
             break;
-        case 2: // wanted to really add a spin on things and make the player interested in the life of the merchant!! 
-            std::cout << "\nMikage: Ah, As a young prince, I once stood against my parents' oppressive rule, unable to bear their tyranny.\n"
-                "I escaped the royal life, determined to fight against their evil, but for reasons I still do not fully understand, I lost my powers.\n"
+        case 2:
+            std::cout << "\nMikage: Ah, as a young prince, I once stood against my parents' oppressive rule, unable to bear their tyranny.\n"
+                 "I escaped the royal life, determined to fight against their evil, but for reasons I still do not fully understand, I lost my powers.\n"
                 "So, I have lived as a humble merchant, quietly plotting to thwart their reign.\n"
-                "As a way to get back at me, my such loving parents kidnapped my best friend, holding him hostage within my very own place of my birth.\n"
-                "Over the past few months, I have been uncovering the truth behind my lost strength, and I can feel it awakening within me, one day at a time.\n"
+                "As a way to get back at me, my loving parents kidnapped my best friend, holding him hostage within my very own place of birth.\n"
+                 "Over the past few months, I have been uncovering the truth behind my lost strength, and I can feel it awakening within me, one day at a time.\n"
                 "I know that one day soon, I will reclaim my rightful place on the throne and restore justice to my kingdom.\n\n";
             break;
         case 3:
             std::cout << "\nMikage: Very well! Let me know if you need anything, I am always here for you! \n\n";
             break;
         default:
-            std::cout << "\nMikage: I don't understand that, what do you mean young hero?\n\n"; // anything else brings them back to this default line seen alot in other games hehe i got inspiration!
+            std::cout << "\nMikage: I don't understand that. What do you mean, young hero?\n\n";
         }
     }
 };
 
 // class for the player!
-class Player {
+class Player { //no private included since nothing is only to be used by the player
 public:
     float money; // players money! i use float, since floats can add decimals used for money
     std::vector<Item> inventory; // players inventory of items! 
@@ -199,7 +304,6 @@ public:
         for (auto& item : inventory) {
             if (item.name == name) {
                 item.quantity += quantity; // if item exists, then increase the quantity
-                return;
             }
         }
         inventory.push_back(Item(name, price, quantity)); // add new item if it doesnt already exist
@@ -223,18 +327,20 @@ int main() {
     std::string playerName;  //variable holding the players inputted name
     Player player; // create a player object and merchant object
     Merchant merchant;
-
+     
+    //this is where the code actually 'begins' like where it shows the user playing 
+ 
     // get the players name by asking them and then getting the cin they type
     std::cout << "Enter your name: ";
     std::getline(std::cin, playerName);
 
     //welcome message to the player once they type their name in! 
-    std::cout << "\nWelcome " << playerName << ", Hero of Gravestone! You currently have $" << player.money << " in your account.\n"
-        << "You can sell items to me at 50% of the original selling price. Sorry, a guys gotta make a living, " << playerName << ".\n\n";
+    std::cout << "\nMikage: Welcome " << playerName << ", Hero of Gravestone! You currently have $" << player.money << " in your account.\n"
+        << "You can sell items to me at 50% of the original selling price. Sorry, a guys gotta make a living, " << playerName << ". \nRemember,everything is case sensitive, so insert the names of the items you want to buy/sell with correct capitilzation! \n\n";
 
     char choice; // varaible to store all the players choices! i learned that char is used to store one character at a time. so in this case its one choice at a time so the program lets the player press B or S or I or T or E! 
 
-    //main game loop required in the assignment
+    //main game loop required in the assignment! it brings the player back to this 'main menu' where they can choose from these options
     while (true) {
         std::cout << "Press 'B' to buy, 'S' to sell, 'I' to check your inventory, 'T' to talk to Mikage, or 'E' to exit: "; // this cout shows the player the options 
         std::cin >> choice; //cin takes the players choice that they input
@@ -244,7 +350,7 @@ int main() {
             break; // exit the loop if the player chooses the letter E
         }
 
-        switch (choice) { // learned online that switches can be cleaner than else-if statments when it comes to clearly outlining different cases based on a players input (use this in the future if sir says its alright)
+        switch (choice) { // learned online that switches can be cleaner than else-if statements when it comes to clearly outlining different cases based on a players input (use this in the future if sir says its alright)
         case 'B':
         case 'b': {
             merchant.displayInventory(); // display the merchants inventory
@@ -294,5 +400,8 @@ int main() {
         }
     }
 
-    return 0; // always need to include this to end the program!!! important liana!!! 
+    return 0; // always need to include this to end the program!!! important liana!!!
 }
+
+//bugs: whenever user is on the buy page and inserts their object they would like to purchase, screen shows the quantity. when user inputs their quantity as a letter instead of a number code keeps repeating itself in endless loop. 
+// future updates i want to add to build my knowledge: more mikage dialogue, character information cards sound fun, maybe adding an option to continue the story or interacting with more of the outside world! (make sir that sir is okay with this first)
