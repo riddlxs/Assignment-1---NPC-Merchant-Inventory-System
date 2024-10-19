@@ -606,7 +606,3 @@ int main() {
 
     return 0; // always need to include this to end the program!!! important liana!!!
 }
-
-//bugs: whenever user is on the buy page and inserts their object they would like to purchase, screen shows the quantity. when user inputs their quantity as a letter instead of a number code keeps repeating itself in endless loop. 
-//not letting me change the playername variable to the playerinfo one I am using now because its in talktomikage. still not sure how to fix this, or why it wont let me change it.
-//future updates i want to add to build my knowledge: adding an option to continue the story or interacting with more of the outside world! (make sure that sir is okay with this first)
